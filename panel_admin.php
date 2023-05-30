@@ -39,6 +39,7 @@ if (!$user) {
     <li><a href="gestion_clients.php">Gestion des clients</a></li>
     <li><a href="gestion_factures.php">Gestion des factures</a></li>
     <li><a href="gestion_services.php">Gestion des services</a></li>
+    <li><a href="affectation_service.php">Affectation des services</a></li>
     <li><a href="rapports.php">Rapports</a></li>
     <li><a href="parametres.php">Paramètres</a></li>
 </ul>

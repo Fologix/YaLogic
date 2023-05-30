@@ -19,8 +19,8 @@ if (!$user) {
     exit;
 }
 
-// Récupère tous les services
-$stmt = $pdo->prepare("SELECT * FROM services");
+// Récupère tous les services ordonnés par désignation
+$stmt = $pdo->prepare("SELECT * FROM services ORDER BY designation ASC");
 $stmt->execute();
 $services = $stmt->fetchAll();
 ?>
@@ -39,18 +39,18 @@ $services = $stmt->fetchAll();
 <table>
     <thead>
     <tr>
-        <th>Id</th>
         <th>Désignation</th>
         <th>Prix Unitaire</th>
+        <th>Type de Service</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <?php foreach ($services as $service) : ?>
         <tr>
-            <td><?php echo $service['id_service']; ?></td>
             <td><?php echo $service['designation']; ?></td>
             <td><?php echo $service['prix_unitaire']; ?> €</td>
+            <td><?php echo ucfirst($service['type_service']); ?></td>
             <td>
                 <a href="modifier_service.php?id=<?php echo $service['id_service']; ?>">Modifier</a> |
                 <a href="supprimer_service.php?id=<?php echo $service['id_service']; ?>">Supprimer</a>

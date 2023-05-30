@@ -29,19 +29,21 @@ if (isset($_GET['id'])) {
     exit('Pas d\'ID de service spécifié.');
 }
 
-if (isset($_POST['designation'], $_POST['prix_unitaire'])) {
+if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service'])) {
     $designation = $_POST['designation'];
     $prix_unitaire = $_POST['prix_unitaire'];
+    $type_service = $_POST['type_service'];
 
     if (empty($designation) || empty($prix_unitaire)) {
         $error = "Veuillez remplir tous les champs.";
     } elseif (!is_numeric($prix_unitaire) || $prix_unitaire < 0) {
         $error = "Le prix unitaire doit être un nombre positif.";
     } else {
-        $stmt = $pdo->prepare("UPDATE services SET designation = :designation, prix_unitaire = :prix_unitaire WHERE id_service = :id");
+        $stmt = $pdo->prepare("UPDATE services SET designation = :designation, prix_unitaire = :prix_unitaire, type_service = :type_service WHERE id_service = :id");
         $stmt->execute([
             'designation' => $designation,
             'prix_unitaire' => $prix_unitaire,
+            'type_service' => $type_service,
             'id' => $_GET['id'],
         ]);
 
@@ -67,6 +69,12 @@ if (isset($_POST['designation'], $_POST['prix_unitaire'])) {
     <br>
     <label for="prix_unitaire">Prix Unitaire :</label>
     <input type="number" name="prix_unitaire" id="prix_unitaire" step="0.01" value="<?php echo $service['prix_unitaire']; ?>" required>
+    <br>
+    <label for="type_service">Type de service :</label>
+    <select id="type_service" name="type_service" required>
+        <option value="unique" <?php echo $service['type_service'] == 'unique' ? 'selected' : ''; ?>>Unique</option>
+        <option value="récurrent" <?php echo $service['type_service'] == 'récurrent' ? 'selected' : ''; ?>>Récurrent</option>
+    </select>
     <br>
     <input type="submit" value="Modifier">
 </form>
