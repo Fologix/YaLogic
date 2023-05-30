@@ -1,58 +1,47 @@
 <?php
 session_start();
-require_once 'db_connexion.php';
-$pdo = connexion_bdd();
+include_once 'db_connexion.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo "Vous n'êtes pas connecté";
+// Vérifie si l'utilisateur est connecté
+if(!isset($_SESSION['user_id'])) {
+    header("Location: connexion.php");
     exit;
 }
 
-$sqlFactures = "SELECT c.id_client, c.nom_client, c.prenom_client, c.nom_societe, c.mail, f.id_facture, f.date_facture, SUM(fs.quantite * s.prix_unitaire) as total
-               FROM clients c
-               INNER JOIN factures f ON c.id_client = f.id_client
-               INNER JOIN factures_services fs ON f.id_facture = fs.id_facture
-               INNER JOIN services s ON fs.id_service = s.id_service
-               GROUP BY f.id_facture";
-$stmtFactures = $pdo->prepare($sqlFactures);
-$stmtFactures->execute();
-$facturesData = $stmtFactures->fetchAll();
+// Récupère les détails de l'administrateur
+$pdo = connexion_bdd();
+$stmt = $pdo->prepare("SELECT * FROM admin WHERE id_admin = :id_admin");
+$stmt->execute(['id_admin' => $_SESSION['user_id']]);
+$user = $stmt->fetch();
 
-echo "<table>
-    <thead>
-        <tr>
-            <th>Client ID</th>
-            <th>Nom du client</th>
-            <th>Prénom du client</th>
-            <th>Nom de la société</th>
-            <th>Email</th>
-            <th>ID de la facture</th>
-            <th>Date de la facture</th>
-            <th>Total de la facture</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>";
-
-foreach ($facturesData as $facture) {
-    echo "<tr>
-        <td>{$facture['id_client']}</td>
-        <td>{$facture['nom_client']}</td>
-        <td>{$facture['prenom_client']}</td>
-        <td>{$facture['nom_societe']}</td>
-        <td>{$facture['mail']}</td>
-        <td>{$facture['id_facture']}</td>
-        <td>{$facture['date_facture']}</td>
-        <td>{$facture['total']}</td>
-        <td>
-            <a href=\"edit_facture.php?id={$facture['id_facture']}\">Edit</a> | 
-            <a href=\"delete_facture.php?id={$facture['id_facture']}\">Delete</a>
-        </td>
-    </tr>";
+if (!$user) {
+    header("Location: deconnexion.php");
+    exit;
 }
 
-echo "</tbody></table>";
-
 ?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<a href="deconnexion.php">Se déconnecter</a>
+<h1>Bienvenue, <?php echo $user['nom_admin']; ?>!</h1>
 
-<a href="service.php">services</a>
+<h2>Panneau de contrôle administrateur</h2>
+
+<p>Voici quelques liens vers les différentes sections de votre site:</p>
+
+<ul>
+    <li><a href="gestion_clients.php">Gestion des clients</a></li>
+    <li><a href="gestion_factures.php">Gestion des factures</a></li>
+    <li><a href="gestion_services.php">Gestion des services</a></li>
+    <li><a href="rapports.php">Rapports</a></li>
+    <li><a href="parametres.php">Paramètres</a></li>
+</ul>
+
+</body>
+</html>
