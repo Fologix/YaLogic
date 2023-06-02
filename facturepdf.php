@@ -16,10 +16,12 @@ if($id_facture === null) {
 }
 
 // Sélection des informations client
-$sqlClient = "SELECT c.id_client, c.nom_client, c.prenom_client, c.nom_societe, c.mail, c.password, f.id_facture, f.date_facture, s.designation, s.quantite, s.prix_unitaire
+// Sélection des informations client
+$sqlClient = "SELECT c.id_client, c.nom_client, c.prenom_client, c.nom_societe, c.mail, c.password, f.id_facture, f.date_facture, s.designation, fs.quantite, s.prix_unitaire
                FROM clients c
                INNER JOIN factures f ON c.id_client = f.id_client
-               INNER JOIN services s ON f.id_facture = s.id_facture
+               INNER JOIN factures_services fs ON f.id_facture = fs.id_facture
+               INNER JOIN services s ON fs.id_service = s.id_service
                WHERE f.id_facture = :id";
 $stmtClient = $pdo->prepare($sqlClient);
 $stmtClient->execute(['id' => $id_facture]);

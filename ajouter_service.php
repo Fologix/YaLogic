@@ -17,21 +17,23 @@ if (!$user) {
     exit;
 }
 
-if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service'])) {
+if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service'], $_POST['id_produit_stripe'])) {
     $designation = $_POST['designation'];
     $prix_unitaire = $_POST['prix_unitaire'];
     $type_service = $_POST['type_service'];
+    $id_produit_stripe = $_POST['id_produit_stripe'];
 
-    if (empty($designation) || empty($prix_unitaire)) {
+    if (empty($designation) || empty($prix_unitaire) || empty($id_produit_stripe)) {
         $error = "Veuillez remplir tous les champs.";
     } elseif (!is_numeric($prix_unitaire) || $prix_unitaire < 0) {
         $error = "Le prix unitaire doit être un nombre positif.";
     } else {
-        $stmt = $pdo->prepare("INSERT INTO services (designation, prix_unitaire, type_service) VALUES (:designation, :prix_unitaire, :type_service)");
+        $stmt = $pdo->prepare("INSERT INTO services (designation, prix_unitaire, type_service, id_produit_stripe) VALUES (:designation, :prix_unitaire, :type_service, :id_produit_stripe)");
         $stmt->execute([
             'designation' => $designation,
             'prix_unitaire' => $prix_unitaire,
             'type_service' => $type_service,
+            'id_produit_stripe' => $id_produit_stripe,
         ]);
 
         header("Location: gestion_services.php");
@@ -64,9 +66,11 @@ if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service']
         <option value="récurrent">Récurrent</option>
     </select>
     <br>
+    <label for="id_produit_stripe">Clé du produit Stripe :</label>
+    <input type="text" id="id_produit_stripe" name="id_produit_stripe" required>
+    <br>
     <input type="submit" value="Ajouter">
 </form>
 
 </body>
 </html>
-

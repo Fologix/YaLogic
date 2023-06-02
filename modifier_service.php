@@ -29,21 +29,23 @@ if (isset($_GET['id'])) {
     exit('Pas d\'ID de service spécifié.');
 }
 
-if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service'])) {
+if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service'], $_POST['id_produit_stripe'])) {
     $designation = $_POST['designation'];
     $prix_unitaire = $_POST['prix_unitaire'];
     $type_service = $_POST['type_service'];
+    $id_produit_stripe = $_POST['id_produit_stripe'];
 
-    if (empty($designation) || empty($prix_unitaire)) {
+    if (empty($designation) || empty($prix_unitaire) || empty($id_produit_stripe)) {
         $error = "Veuillez remplir tous les champs.";
     } elseif (!is_numeric($prix_unitaire) || $prix_unitaire < 0) {
         $error = "Le prix unitaire doit être un nombre positif.";
     } else {
-        $stmt = $pdo->prepare("UPDATE services SET designation = :designation, prix_unitaire = :prix_unitaire, type_service = :type_service WHERE id_service = :id");
+        $stmt = $pdo->prepare("UPDATE services SET designation = :designation, prix_unitaire = :prix_unitaire, type_service = :type_service, id_produit_stripe = :id_produit_stripe WHERE id_service = :id");
         $stmt->execute([
             'designation' => $designation,
             'prix_unitaire' => $prix_unitaire,
             'type_service' => $type_service,
+            'id_produit_stripe' => $id_produit_stripe,
             'id' => $_GET['id'],
         ]);
 
@@ -75,6 +77,9 @@ if (isset($_POST['designation'], $_POST['prix_unitaire'], $_POST['type_service']
         <option value="unique" <?php echo $service['type_service'] == 'unique' ? 'selected' : ''; ?>>Unique</option>
         <option value="récurrent" <?php echo $service['type_service'] == 'récurrent' ? 'selected' : ''; ?>>Récurrent</option>
     </select>
+    <br>
+    <label for="id_produit_stripe">Clé du produit Stripe :</label>
+    <input type="text" name="id_produit_stripe" id="id_produit_stripe" value="<?php echo $service['id_produit_stripe']; ?>" required>
     <br>
     <input type="submit" value="Modifier">
 </form>

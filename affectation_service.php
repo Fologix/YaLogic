@@ -33,15 +33,27 @@ if (isset($_POST['submit'])) {
     $id_client = $_POST['id_client'];
     $id_services = $_POST['id_service'];
 
-    // Prépare la requête une seule fois
-    $stmt = $pdo->prepare("INSERT INTO services_clients (id_client, id_service) VALUES (:id_client, :id_service)");
+    // Création de la facture pour le client
+    $stmt = $pdo->prepare("INSERT INTO factures (id_client, date_facture) VALUES (:id_client, NOW())");
+    $stmt->execute(['id_client' => $id_client]);
+    $id_facture = $pdo->lastInsertId(); // Récupère l'ID de la facture créée
 
-    // Parcourt tous les services coches et les ajoute un par un
+    // Prépare la requête une seule fois pour ajouter les services et l'ID de la facture
+    $stmt = $pdo->prepare("INSERT INTO services_clients (id_client, id_service, id_facture) VALUES (:id_client, :id_service, :id_facture)");
+
+    // Prépare la requête pour ajouter des entrées à la table factures_services
+    $stmt2 = $pdo->prepare("INSERT INTO factures_services (id_facture, id_service, quantite) VALUES (:id_facture, :id_service, :quantite)");
+
+    // Parcourt tous les services cochés et les ajoute un par un avec l'ID de la facture
     foreach($id_services as $id_service) {
-        $stmt->execute(['id_client' => $id_client, 'id_service' => $id_service]);
+        $stmt->execute(['id_client' => $id_client, 'id_service' => $id_service, 'id_facture' => $id_facture]);
+
+        // Ajoute une entrée dans la table factures_services
+        // Remplacez 1 par la quantité appropriée pour chaque service
+        $stmt2->execute(['id_facture' => $id_facture, 'id_service' => $id_service, 'quantite' => 1]);
     }
 
-    $message = "Les services ont été ajoutés au client.";
+    $message = "Les services ont été ajoutés au client et une facture a été créée.";
 }
 ?>
 
@@ -59,20 +71,21 @@ if (isset($_POST['submit'])) {
 <?php if (isset($message)) { echo "<p>$message</p>"; } ?>
 <form method="post">
     <label for="id_client">Client :</label>
-    <select name="id_client" id="id_client" required>
+    <select name="id_client" id="id_client">
         <?php foreach ($clients as $client) { ?>
             <option value="<?php echo $client['id_client']; ?>"><?php echo $client['nom_client']; ?></option>
         <?php } ?>
     </select>
     <br>
     <label>Services :</label>
+    <br>
     <?php foreach ($services as $service) { ?>
-        <input type="checkbox" name="id_service[]" value="<?php echo $service['id_service']; ?>"><?php echo $service['designation']; ?><br>
+        <input type="checkbox" name="id_service[]" value="<?php echo $service['id_service']; ?>">
+        <label for="id_service[]"><?php echo $service['designation']; ?></label>
+        <br>
     <?php } ?>
     <br>
-    <input type="submit" name="submit" value="Ajouter">
+    <button type="submit" name="submit">Créer le service pour le client</button>
 </form>
-<p><a href="panel_admin.php">Retour au Panneau d'administration</a></p>
 </body>
 </html>
-
