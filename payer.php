@@ -1,10 +1,18 @@
 <?php
 require_once('vendor/autoload.php');
-\Stripe\Stripe::setApiKey('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'); // Utilisez votre clé secrète Stripe ici
 
-// Récupérer le montant total à facturer au client.
-// Pour le moment, je vais simplement mettre un montant statique pour cet exemple.
-$total = 50; // Ce sera en centimes. Donc 10000 centimes est équivalent à 100 euros.
+\Stripe\Stripe::setApiKey('sk_test_51N2dVtEAVA2mzTaKMmxxO22mdUBwOrTfLv4R7gZpjBm4b3XVlyItU6a6K2G6YDQRwHZQx87E9XMV7hYPtE1p2P9d00E5j1FgRT');
+
+$serviceId = $_GET['service_id'];
+
+include_once 'db_connexion.php';
+
+$pdo = connexion_bdd();
+
+$stmt = $pdo->prepare("SELECT prix_unitaire FROM services WHERE id_service = :id_service");
+$stmt->execute(['id_service' => $serviceId]);
+$service = $stmt->fetch();
+$total = $service['prix_unitaire'] * 100;
 
 $checkout_session = \Stripe\Checkout\Session::create([
     'payment_method_types' => ['card'],
@@ -19,12 +27,10 @@ $checkout_session = \Stripe\Checkout\Session::create([
         'quantity' => 1,
     ]],
     'mode' => 'payment',
-    'success_url' => 'https://yassineverriez.com/success.php?session_id={CHECKOUT_SESSION_ID}',
+    'success_url' => 'https://yassineverriez.com/success.php?session_id={CHECKOUT_SESSION_ID}&service_id=' . $serviceId,
     'cancel_url' => 'https://yassineverriez.com',
 ]);
 
-// Vous pouvez ensuite rediriger le client vers la page de paiement.
 header("Location: " . $checkout_session->url);
 exit;
 ?>
-

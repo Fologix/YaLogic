@@ -36,7 +36,7 @@ if (!$user) {
 <p>Voici quelques liens vers les différentes sections de votre site:</p>
 
 <ul>
-    <li><a href="gestion_clients.php">Gestion des clients</a></li>
+    <li><a href="gestion_client.php">Gestion des clients</a></li>
     <li><a href="gestion_factures.php">Gestion des factures</a></li>
     <li><a href="gestion_services.php">Gestion des services</a></li>
     <li><a href="affectation_service.php">Affectation des services</a></li>

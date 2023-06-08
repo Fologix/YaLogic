@@ -44,31 +44,31 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 <a href="deconnexion.php">Retour Accueil</a>
-<h1>Connexion</h1>
-<?php if (isset($error)) { echo "<p>$error</p>"; } ?>
-<form method="post">
-    <label for="email">Email :</label>
-    <input type="email" name="email" id="email" required>
-    <br>
-    <label for="password">Mot de passe :</label>
-    <input type="password" name="password" id="password" required>
-    <input type="button" id="toggle-password" value="Afficher le mot de passe">
-    <br>
-    <input type="submit" name="submit" value="Connexion">
-</form>
-<p><a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a></p>
-<p><a href="inscription.php">Créer un compte</a></p>
-<script>
-    const togglePassword = document.querySelector('#toggle-password');
-    const password = document.querySelector('#password');
-
-    togglePassword.addEventListener('click', function (e) {
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        this.value = this.value === 'Afficher le mot de passe' ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
-    });
-</script>
+<div class="container">
+    <h1>Connexion</h1>
+    <?php if (isset($error)) { echo "<p>$error</p>"; } ?>
+    <form method="post">
+        <div class="form-group">
+            <label for="email">Email :</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe :</label>
+            <div class="password-wrapper">
+                <input type="password" name="password" id="password" required>
+                <button type="button" class="password-toggle" id="toggle-password" onclick="togglePasswordVisibility()">
+                    Afficher le mot de passe
+                </button>
+            </div>
+        </div>
+        <input type="submit" name="submit" value="Connexion">
+    </form>
+    <p class="links"><a href="mot_de_passe_oublie.php">Mot de passe oublié ?</a></p>
+    <p class="links"><a href="inscription.php">Créer un compte</a></p>
+</div>
+<script src="connexion.js"></script>
 </body>
 </html>
+
 
 

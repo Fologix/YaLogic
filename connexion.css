@@ -1,0 +1,158 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #272727;
+    padding: 20px 20px 60px; /* Ajout de la marge inférieure pour agrandir la page */
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+form {
+    background-color: #3d3d3d;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+form:hover {
+    box-shadow: 0 0 20px 5px rgba(153, 102, 255, 0.8);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+    font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #3d3d3d;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.links {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: rgba(153, 102, 255, 0.8); /* Couleur violette au survol */
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+/* Styles spécifiques pour les téléphones */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    form {
+        padding: 10px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        padding: 5px;
+        margin-bottom: 5px;
+    }
+
+    input[type="submit"] {
+        padding: 5px;
+    }
+}
+
+/* Couleurs personnalisées */
+body {
+    background-color: #272727;
+    color: #fff;
+}
+
+h1 {
+    color: #fff;
+}
+
+form {
+    background-color: #3d3d3d;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+}
+
+label {
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input[type="email"],
+input[type="password"] {
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+}
+
+a {
+    color: #fff;
+}
+
+a:hover {
+    color: #555;
+}
+
+/* Positionnement du bouton "Afficher/Masquer le mot de passe" */
+#toggle-password {
+    background-color: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    outline: none;
+    margin-left: 5px;
+}
+
+#toggle-password:hover {
+    color: #888;
+}
+
+/* Couleur du bouton "Connexion" au survol */
+input[type="submit"]:hover {
+    background-color: rgba(153, 102, 255, 0.8);
+}

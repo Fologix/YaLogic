@@ -60,6 +60,7 @@ if (isset($_POST['submit'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="inscription.css">
     <title>Inscription</title>
     <style>
         .progress {
