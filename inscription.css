@@ -68,3 +68,23 @@ a:hover {
     background-color: #4CAF50;
     width: 0;
 }
+
+.links {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: rgba(153, 102, 255, 0.8); /* Couleur violette au survol */
+}
+
+input[type="submit"]:hover {
+    background-color: rgba(153, 102, 255, 0.8);
+}

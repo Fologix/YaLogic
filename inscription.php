@@ -60,41 +60,8 @@ if (isset($_POST['submit'])) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="inscription.css">
     <title>Inscription</title>
-    <style>
-        .progress {
-            width: 100%;
-            height: 5px;
-            background-color: #f3f3f3;
-            position: relative;
-        }
-        .progress-bar {
-            height: 100%;
-            position: absolute;
-            background-color: #4CAF50;
-            width: 0;
-        }
-    </style>
-    <script>
-        function updateProgressBar() {
-            var password = document.getElementById("password").value;
-            var progressBar = document.getElementById("progress-bar");
-            var width = 0;
-
-            if (password.length >= 8) {
-                width += 33;
-            }
-            if (/[A-Z]/.test(password)) {
-                width += 33;
-            }
-            if (/[^\w]/.test(password)) {
-                width += 34;
-            }
-
-            progressBar.style.width = width + '%';
-        }
-    </script>
+    <link rel="stylesheet" href="inscription.css">
 </head>
 <body>
 <h1>Inscription</h1>
@@ -112,7 +79,29 @@ if (isset($_POST['submit'])) {
     </div>
     <input type="submit" name="submit" value="S'inscrire">
 </form>
-<a href="connexion.php">Retour à la connexion</a>
+<div class="links">
+    <a href="connexion.php">Retour à la connexion</a>
+</div>
+<script>
+    function updateProgressBar() {
+        var password = document.getElementById("password").value;
+        var progressBar = document.getElementById("progress-bar");
+        var width = 0;
+
+        if (password.length >= 8) {
+            width += 33;
+        }
+        if (/[A-Z]/.test(password)) {
+            width += 33;
+        }
+        if (/[^\w]/.test(password)) {
+            width += 34;
+        }
+
+        progressBar.style.width = width + '%';
+    }
+</script>
 </body>
 </html>
+
 
